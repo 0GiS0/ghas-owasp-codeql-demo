@@ -11,7 +11,9 @@ app.use('/api', require('./xss'));
 app.use('/api', require('./command-injection'));
 app.use('/api', require('./path-traversal'));
 app.use('/api', require('./insecure-deserialization'));
+app.use('/api', require('./security-misconfiguration'));
 app.use('/api', require('./hardcoded-credentials'));
+app.use('/api', require('./non-owasp-redos'));
 app.use('/api', require('./ssrf'));
 app.use('/api', require('./open-redirect'));
 app.use('/api', require('./prototype-pollution'));
@@ -27,6 +29,8 @@ app.get('/', (req, res) => {
       'GET  /api/download?file=        → Path Traversal',
       'POST /api/profile               → Insecure Deserialization',
       'GET  /api/admin?user=&pass=     → Hardcoded Credentials',
+      'GET  /api/external              → Security Misconfiguration',
+      'GET  /api/validate-email?email= → ReDoS (NO OWASP - no debería detectarse)',
       'GET  /api/fetch?url=            → SSRF',
       'GET  /api/login?returnUrl=      → Open Redirect',
       'POST /api/settings              → Prototype Pollution'

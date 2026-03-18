@@ -1,0 +1,20 @@
+{
+  "database": {
+    "host": "db.production.internal",
+    "port": 5432,
+    "username": "postgres",
+    "password": "p0stgr3s_pr0d_2024!"
+  },
+  "smtp": {
+    "host": "smtp.gmail.com",
+    "port": 587,
+    "auth": {
+      "user": "app@company.com",
+      "pass": "email_password_2024"
+    }
+  },
+  "api": {
+    "secret": "my-super-secret-jwt-key-do-not-share",
+    "adminPassword": ""
+  }
+}

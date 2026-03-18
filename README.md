@@ -29,9 +29,12 @@ src/
 ├── path-traversal.js              ← A01: Broken Access Control
 ├── open-redirect.js               ← A01: Broken Access Control
 ├── weak-crypto.js                 ← A02: Cryptographic Failures
+├── security-misconfiguration.js   ← A05: Security Misconfiguration
 ├── hardcoded-credentials.js       ← A07: Identification & Auth Failures
 ├── insecure-deserialization.js    ← A08: Software & Data Integrity
-└── ssrf.js                        ← A10: SSRF
+├── ssrf.js                        ← A10: SSRF
+├── config.json                    ← A07: Passwords en archivo de configuración
+└── non-owasp-redos.js             ← ⚠️ ReDoS (NO es OWASP Top 10 - prueba de filtro)
 ```
 
 ## 🔑 Archivos clave
@@ -132,6 +135,15 @@ El mismo patrón aplica para cualquier framework. Solo necesitas:
 | `security-extended` | `default` + queries adicionales de seguridad | Análisis de seguridad amplio |
 | `security-and-quality` | Todo lo anterior + calidad de código | Análisis completo |
 | **Suite personalizada (.qls)** | **Solo lo que tú definas** | **Cumplimiento normativo específico** ✅ |
+
+## 🧪 Verificación: ¿El filtro funciona?
+
+El archivo `src/non-owasp-redos.js` contiene una vulnerabilidad **ReDoS** (Regular Expression Denial of Service, CWE-1333) que **no pertenece al OWASP Top 10**. 
+
+- ✅ Con la suite `security-extended` estándar, CodeQL **sí la detectaría** (`js/polynomial-redos`)
+- ❌ Con nuestra suite personalizada OWASP, **no aparece** en la pestaña Security
+
+Esto demuestra que el filtro funciona: solo se ejecutan las queries que definimos en la `.qls`.
 
 ## 📚 Referencias
 
