@@ -1,0 +1,23 @@
+# Configuración de CodeQL para OWASP Top 10
+# Este archivo indica a CodeQL que use SOLO la query suite personalizada
+# de OWASP Top 10, en lugar de las suites predefinidas (default o security-extended).
+#
+# Documentación:
+# https://docs.github.com/en/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning
+
+name: "CodeQL - OWASP Top 10"
+
+# Usar SOLO la query suite personalizada de OWASP Top 10
+# Esto reemplaza completamente las queries predefinidas
+queries:
+  - uses: ./.github/codeql/owasp-top-10-js.qls
+
+# Paths a analizar (solo el código fuente de la aplicación)
+paths:
+  - src
+
+# Paths a ignorar (tests, fixtures, etc.)
+paths-ignore:
+  - node_modules
+  - "**/*.test.js"
+  - "**/*.spec.js"

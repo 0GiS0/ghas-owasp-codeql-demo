@@ -1,0 +1,17 @@
+{
+  "name": "ghas-owasp-codeql-demo",
+  "version": "1.0.0",
+  "description": "Demo: Configurar CodeQL con queries filtradas por OWASP Top 10",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "node-serialize": "^0.0.4",
+    "axios": "^1.6.0"
+  },
+  "keywords": ["ghas", "codeql", "owasp", "security", "demo"],
+  "license": "MIT"
+}
