@@ -1,4 +1,4 @@
-// OWASP A08:2021 - Software and Data Integrity Failures
+// OWASP A08:2025 - Software or Data Integrity Failures
 // CWE-502: Deserialization of Untrusted Data
 // CodeQL queries: js/unsafe-deserialization
 const express = require('express');

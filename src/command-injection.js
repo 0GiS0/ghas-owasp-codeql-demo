@@ -1,4 +1,4 @@
-// OWASP A03:2021 - Injection (Command Injection)
+// OWASP A05:2025 - Injection (Command Injection)
 // CWE-78: OS Command Injection
 // CodeQL queries: js/command-line-injection, js/shell-command-constructed-from-input
 const express = require('express');

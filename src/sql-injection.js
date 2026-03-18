@@ -1,4 +1,4 @@
-// OWASP A03:2021 - Injection (SQL Injection)
+// OWASP A05:2025 - Injection (SQL Injection) (baja de A03:2021)
 // CWE-89: SQL Injection
 // CodeQL query: js/sql-injection
 const express = require('express');

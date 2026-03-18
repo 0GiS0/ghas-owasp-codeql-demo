@@ -1,4 +1,4 @@
-// OWASP A10:2021 - Server-Side Request Forgery (SSRF)
+// OWASP A01:2025 - Broken Access Control (SSRF - movido desde A10:2021)
 // CWE-918: Server-Side Request Forgery
 // CodeQL queries: js/request-forgery, js/client-side-request-forgery
 const express = require('express');

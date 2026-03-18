@@ -1,4 +1,4 @@
-// OWASP A03:2021 - Injection (Prototype Pollution)
+// OWASP A05:2025 - Injection (Prototype Pollution)
 // CWE-1321: Improperly Controlled Modification of Object Prototype Attributes
 // CodeQL queries: js/prototype-pollution, js/prototype-polluting-assignment
 const express = require('express');

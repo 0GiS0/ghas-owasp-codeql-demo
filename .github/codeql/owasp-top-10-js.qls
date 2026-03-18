@@ -1,9 +1,9 @@
 # -----------------------------------------------------------
-# CodeQL Query Suite: OWASP Top 10 (2021) - JavaScript/TypeScript
+# CodeQL Query Suite: OWASP Top 10 (2025) - JavaScript/TypeScript
 # -----------------------------------------------------------
 #
 # Este archivo define un conjunto personalizado de queries de CodeQL
-# que cubren exclusivamente las categorías del OWASP Top 10 (2021).
+# que cubren exclusivamente las categorías del OWASP Top 10 (2025).
 #
 # Al usar esta suite en lugar de "security-extended" o "default",
 # solo se ejecutarán las queries relevantes para OWASP Top 10,
@@ -36,9 +36,11 @@
     id:
 
     # =========================================================
-    # A01:2021 - Broken Access Control
+    # A01:2025 - Broken Access Control
+    # Mantiene #1. Ahora incluye SSRF (antes era A10:2021)
     # CWE-22: Path Traversal
     # CWE-601: URL Redirection to Untrusted Site
+    # CWE-918: SSRF (movido desde A10:2021)
     # =========================================================
     - js/path-injection
     - js/ml-powered/path-injection
@@ -46,9 +48,45 @@
     - js/client-side-unvalidated-url-redirection
     - js/user-controlled-bypass
     - js/exposure-of-private-files
+    - js/request-forgery
+    - js/client-side-request-forgery
+    - js/file-access-to-http
+    - js/http-to-file-access
+    - js/sensitive-get-query
 
     # =========================================================
-    # A02:2021 - Cryptographic Failures
+    # A02:2025 - Security Misconfiguration
+    # Sube de A05:2021 a A02:2025
+    # CWE-16: Configuration
+    # CWE-611: XXE
+    # =========================================================
+    - js/cors-misconfiguration-for-credentials
+    - js/disabling-certificate-validation
+    - js/disabling-electron-websecurity
+    - js/enabling-electron-insecure-content
+    - js/functionality-from-untrusted-source
+    - js/unsafe-external-link
+    - js/double-escaping
+    - js/incomplete-hostname-regexp
+    - js/incomplete-url-scheme-check
+    - js/incomplete-url-substring-sanitization
+    - js/incorrect-suffix-check
+    - js/incomplete-sanitization
+    - js/incomplete-html-attribute-sanitization
+    - js/incomplete-multi-character-sanitization
+    - js/samesite-none-cookie
+
+    # =========================================================
+    # A03:2025 - Software Supply Chain Failures
+    # Expandido desde A06:2021 (Vulnerable and Outdated Components)
+    # (Dependabot + CodeQL para dependencias inseguras)
+    # =========================================================
+    - js/insecure-dependency
+    - js/insecure-download
+
+    # =========================================================
+    # A04:2025 - Cryptographic Failures
+    # Baja de A02:2021 a A04:2025
     # CWE-327: Use of Broken/Weak Crypto Algorithm
     # CWE-328: Reversible One-Way Hash
     # CWE-330: Insufficient Randomness
@@ -62,7 +100,8 @@
     - js/clear-text-cookie
 
     # =========================================================
-    # A03:2021 - Injection
+    # A05:2025 - Injection
+    # Baja de A03:2021 a A05:2025
     # CWE-79: XSS
     # CWE-78: OS Command Injection
     # CWE-89: SQL Injection
@@ -102,41 +141,15 @@
     - js/regex/missing-regexp-anchor
 
     # =========================================================
-    # A04:2021 - Insecure Design
+    # A06:2025 - Insecure Design
+    # Baja de A04:2021 a A06:2025
     # CWE-799: Improper Control of Interaction Frequency
     # =========================================================
     - js/missing-rate-limiting
 
     # =========================================================
-    # A05:2021 - Security Misconfiguration
-    # CWE-16: Configuration
-    # CWE-611: XXE
-    # =========================================================
-    - js/cors-misconfiguration-for-credentials
-    - js/disabling-certificate-validation
-    - js/disabling-electron-websecurity
-    - js/enabling-electron-insecure-content
-    - js/functionality-from-untrusted-source
-    - js/unsafe-external-link
-    - js/double-escaping
-    - js/incomplete-hostname-regexp
-    - js/incomplete-url-scheme-check
-    - js/incomplete-url-substring-sanitization
-    - js/incorrect-suffix-check
-    - js/incomplete-sanitization
-    - js/incomplete-html-attribute-sanitization
-    - js/incomplete-multi-character-sanitization
-    - js/samesite-none-cookie
-
-    # =========================================================
-    # A06:2021 - Vulnerable and Outdated Components
-    # (Dependabot cubre esto, no hay queries específicas de CodeQL)
-    # =========================================================
-    - js/insecure-dependency
-    - js/insecure-download
-
-    # =========================================================
-    # A07:2021 - Identification and Authentication Failures
+    # A07:2025 - Authentication Failures
+    # Mantiene #7 (renombrado de "Identification and Auth Failures")
     # CWE-798: Hardcoded Credentials
     # CWE-259: Hardcoded Password
     # CWE-384: Session Fixation
@@ -152,7 +165,8 @@
     - js/client-exposed-cookie
 
     # =========================================================
-    # A08:2021 - Software and Data Integrity Failures
+    # A08:2025 - Software or Data Integrity Failures
+    # Mantiene #8
     # CWE-502: Deserialization of Untrusted Data
     # =========================================================
     - js/unsafe-deserialization
@@ -161,7 +175,8 @@
     - js/identity-replacement
 
     # =========================================================
-    # A09:2021 - Security Logging and Monitoring Failures
+    # A09:2025 - Security Logging & Alerting Failures
+    # Mantiene #9 (renombrado, ahora enfatiza "Alerting")
     # CWE-778: Insufficient Logging
     # (CodeQL tiene cobertura limitada aquí)
     # =========================================================
@@ -169,14 +184,13 @@
     - js/cross-window-information-leak
 
     # =========================================================
-    # A10:2021 - Server-Side Request Forgery (SSRF)
-    # CWE-918: SSRF
+    # A10:2025 - Mishandling of Exceptional Conditions (NUEVO)
+    # Reemplaza SSRF (que se movió a A01)
+    # CWE-248: Uncaught Exception
+    # CWE-754: Improper Check for Unusual/Exceptional Conditions
+    # CWE-391: Unchecked Error Condition
     # =========================================================
-    - js/request-forgery
-    - js/client-side-request-forgery
-    - js/file-access-to-http
-    - js/http-to-file-access
-    - js/sensitive-get-query
+    - js/resource-exhaustion
 
     # =========================================================
     # GitHub Actions (bonus - seguridad en CI/CD)
@@ -184,7 +198,6 @@
     - js/actions/command-injection
     - js/actions/pull-request-target
     - js/build-artifact-leak
-    - js/resource-exhaustion
     - js/host-header-forgery-in-email-generation
     - js/remote-property-injection
     - js/unsafe-dynamic-method-access

@@ -1,4 +1,4 @@
-// OWASP A02:2021 - Cryptographic Failures
+// OWASP A04:2025 - Cryptographic Failures (baja de A02:2021)
 // CWE-327: Use of Broken/Weak Cryptographic Algorithm
 // CWE-328: Reversible One-Way Hash
 // CodeQL queries: js/weak-cryptographic-algorithm, js/insufficient-key-size

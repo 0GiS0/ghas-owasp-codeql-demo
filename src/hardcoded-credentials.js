@@ -1,4 +1,4 @@
-// OWASP A07:2021 - Identification and Authentication Failures
+// OWASP A07:2025 - Authentication Failures
 // CWE-798: Use of Hardcoded Credentials
 // CWE-259: Hardcoded Password
 // CodeQL queries: js/hardcoded-credentials

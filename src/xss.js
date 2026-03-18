@@ -1,4 +1,4 @@
-// OWASP A03:2021 - Injection (Cross-Site Scripting)
+// OWASP A05:2025 - Injection (Cross-Site Scripting)
 // CWE-79: XSS (Reflected)
 // CodeQL queries: js/reflected-xss, js/xss, js/xss-through-dom
 const express = require('express');

@@ -1,4 +1,4 @@
-// OWASP A05:2021 - Security Misconfiguration
+// OWASP A02:2025 - Security Misconfiguration (sube de A05:2021)
 // CWE-942: CORS Misconfiguration
 // CWE-295: Improper Certificate Validation
 // CodeQL queries: js/cors-misconfiguration-for-credentials, js/disabling-certificate-validation

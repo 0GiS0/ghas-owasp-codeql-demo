@@ -1,4 +1,4 @@
-// OWASP A01:2021 - Broken Access Control (Open Redirect)
+// OWASP A01:2025 - Broken Access Control (Open Redirect)
 // CWE-601: URL Redirection to Untrusted Site
 // CodeQL queries: js/server-side-unvalidated-url-redirection
 const express = require('express');

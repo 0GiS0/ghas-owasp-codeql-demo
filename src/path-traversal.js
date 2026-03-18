@@ -1,4 +1,4 @@
-// OWASP A01:2021 - Broken Access Control (Path Traversal)
+// OWASP A01:2025 - Broken Access Control (Path Traversal)
 // CWE-22: Path Traversal
 // CodeQL queries: js/path-injection
 const express = require('express');

@@ -11,7 +11,7 @@
 
 ---
 
-¡Hola developer 👋🏻! En este repo encontrarás cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para ejecutar **únicamente** las queries alineadas con un marco normativo específico — en este caso, el **OWASP Top 10 (2021)**.
+¡Hola developer 👋🏻! En este repo encontrarás cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para ejecutar **únicamente** las queries alineadas con un marco normativo específico — en este caso, el **[OWASP Top 10 (2025)](https://owasp.org/Top10/2025/0x00_2025-Introduction)**.
 
 ## 🎯 ¿Por qué filtrar queries por marco normativo?
 
@@ -28,22 +28,22 @@ Por defecto, CodeQL ejecuta cientos de queries de seguridad. Esto es útil, pero
 .github/
 ├── codeql/
 │   ├── codeql-config.yml          ← Configuración de CodeQL (apunta a la suite)
-│   └── owasp-top-10-js.qls       ← Query suite: solo queries OWASP Top 10
+│   └── owasp-top-10-js.qls       ← Query suite: solo queries OWASP Top 10 (2025)
 └── workflows/
     └── codeql.yml                 ← Workflow que ejecuta el análisis
 src/
 ├── index.js                       ← Entry point Express
-├── sql-injection.js               ← A03: Injection (SQL)
-├── xss.js                         ← A03: Injection (XSS)
-├── command-injection.js           ← A03: Injection (Command)
-├── prototype-pollution.js         ← A03: Injection (Prototype Pollution)
+├── sql-injection.js               ← A05: Injection (SQL)
+├── xss.js                         ← A05: Injection (XSS)
+├── command-injection.js           ← A05: Injection (Command)
+├── prototype-pollution.js         ← A05: Injection (Prototype Pollution)
 ├── path-traversal.js              ← A01: Broken Access Control
 ├── open-redirect.js               ← A01: Broken Access Control
-├── weak-crypto.js                 ← A02: Cryptographic Failures
-├── security-misconfiguration.js   ← A05: Security Misconfiguration
-├── hardcoded-credentials.js       ← A07: Identification & Auth Failures
-├── insecure-deserialization.js    ← A08: Software & Data Integrity
-├── ssrf.js                        ← A10: SSRF
+├── ssrf.js                        ← A01: Broken Access Control (SSRF, antes A10:2021)
+├── security-misconfiguration.js   ← A02: Security Misconfiguration
+├── weak-crypto.js                 ← A04: Cryptographic Failures
+├── hardcoded-credentials.js       ← A07: Authentication Failures
+├── insecure-deserialization.js    ← A08: Software or Data Integrity
 ├── config.json                    ← A07: Passwords en archivo de configuración
 └── non-owasp-redos.js             ← ⚠️ ReDoS (NO es OWASP Top 10 - prueba de filtro)
 ```
@@ -106,20 +106,29 @@ Referencia la configuración personalizada:
     config-file: ./.github/codeql/codeql-config.yml
 ```
 
-## 📊 Mapeo OWASP Top 10 → CWE → Queries CodeQL (JS/TS)
+## 📊 Mapeo OWASP Top 10 (2025) → CWE → Queries CodeQL (JS/TS)
 
-| OWASP 2021 | Categoría | CWEs Principales | Queries CodeQL (ejemplos) |
+| OWASP 2025 | Categoría | CWEs Principales | Queries CodeQL (ejemplos) |
 |---|---|---|---|
-| **A01** | Broken Access Control | CWE-22, CWE-601 | `js/path-injection`, `js/server-side-unvalidated-url-redirection` |
-| **A02** | Cryptographic Failures | CWE-327, CWE-328, CWE-330 | `js/weak-cryptographic-algorithm`, `js/insufficient-key-size`, `js/insecure-randomness` |
-| **A03** | Injection | CWE-79, CWE-78, CWE-89, CWE-94, CWE-1321 | `js/sql-injection`, `js/reflected-xss`, `js/command-line-injection`, `js/prototype-pollution` |
-| **A04** | Insecure Design | CWE-799 | `js/missing-rate-limiting` |
-| **A05** | Security Misconfiguration | CWE-16, CWE-611 | `js/cors-misconfiguration-for-credentials`, `js/disabling-certificate-validation` |
-| **A06** | Vulnerable Components | — | `js/insecure-dependency` (Dependabot es mejor para esto) |
-| **A07** | Auth Failures | CWE-798, CWE-259, CWE-384 | `js/hardcoded-credentials`, `js/jwt-missing-verification`, `js/session-fixation` |
-| **A08** | Data Integrity Failures | CWE-502 | `js/unsafe-deserialization`, `js/zipslip` |
-| **A09** | Logging Failures | CWE-778 | `js/stack-trace-exposure` |
-| **A10** | SSRF | CWE-918 | `js/request-forgery`, `js/client-side-request-forgery` |
+| **A01** | Broken Access Control | CWE-22, CWE-601, CWE-918 | `js/path-injection`, `js/server-side-unvalidated-url-redirection`, `js/request-forgery` |
+| **A02** | Security Misconfiguration | CWE-16, CWE-611 | `js/cors-misconfiguration-for-credentials`, `js/disabling-certificate-validation` |
+| **A03** | Software Supply Chain Failures | — | `js/insecure-dependency` (Dependabot es mejor para esto) |
+| **A04** | Cryptographic Failures | CWE-327, CWE-328, CWE-330 | `js/weak-cryptographic-algorithm`, `js/insufficient-key-size`, `js/insecure-randomness` |
+| **A05** | Injection | CWE-79, CWE-78, CWE-89, CWE-94, CWE-1321 | `js/sql-injection`, `js/reflected-xss`, `js/command-line-injection`, `js/prototype-pollution` |
+| **A06** | Insecure Design | CWE-799 | `js/missing-rate-limiting` |
+| **A07** | Authentication Failures | CWE-798, CWE-259, CWE-384 | `js/hardcoded-credentials`, `js/jwt-missing-verification`, `js/session-fixation` |
+| **A08** | Software or Data Integrity Failures | CWE-502 | `js/unsafe-deserialization`, `js/zipslip` |
+| **A09** | Security Logging & Alerting Failures | CWE-778 | `js/stack-trace-exposure` |
+| **A10** | Mishandling of Exceptional Conditions | CWE-248, CWE-754 | `js/resource-exhaustion` (cobertura limitada en CodeQL) |
+
+### Cambios principales de 2021 → 2025
+
+| Cambio | Detalle |
+|---|---|
+| 🔄 **SSRF → A01** | SSRF ya no es categoría independiente, se absorbe en Broken Access Control |
+| ⬆️ **Security Misconfiguration → A02** | Sube de #5 a #2 por mayor prevalencia |
+| 🆕 **A03 Supply Chain Failures** | Expande "Vulnerable Components" a toda la cadena de suministro |
+| 🆕 **A10 Exceptional Conditions** | Nueva categoría: manejo inadecuado de errores y condiciones excepcionales |
 
 ## 🔄 ¿Cómo adaptar esto a otros marcos normativos?
 
@@ -163,7 +172,7 @@ Esto demuestra que el filtro funciona: solo se ejecutan las queries que definimo
 - [Lista completa de CWEs cubiertos](https://codeql.github.com/codeql-query-help/full-cwe/)
 - [Crear query suites personalizadas](https://codeql.github.com/docs/codeql-cli/creating-codeql-query-suites/)
 - [securingdev/codeql-query-suites](https://github.com/securingdev/codeql-query-suites) — Ejemplo de suites por framework
-- [OWASP Top 10 (2021)](https://owasp.org/www-project-top-ten/)
+- [OWASP Top 10 (2025)](https://owasp.org/Top10/2025/0x00_2025-Introduction)
 
 ## 📄 Licencia
 
