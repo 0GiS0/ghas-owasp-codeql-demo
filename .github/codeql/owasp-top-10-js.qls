@@ -28,6 +28,10 @@
 #    - very-high
 # -----------------------------------------------------------
 
+# Importar el pack de queries de JavaScript/TypeScript
+# Necesario cuando se usa disable-default-queries: true en la config
+- qlpack: codeql/javascript-queries
+
 - include:
     id:
 
