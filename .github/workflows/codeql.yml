@@ -1,4 +1,4 @@
-name: "CodeQL - OWASP Top 10"
+name: "🛡️ CodeQL - OWASP Top 10"
 
 on:
   push:
