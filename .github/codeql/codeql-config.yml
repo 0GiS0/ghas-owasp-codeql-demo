@@ -7,8 +7,11 @@
 
 name: "CodeQL - OWASP Top 10"
 
+# ⚠️ CLAVE: Desactivar las queries predefinidas (default suite)
+# Sin esto, CodeQL ejecuta las queries por defecto ADEMÁS de las personalizadas
+disable-default-queries: true
+
 # Usar SOLO la query suite personalizada de OWASP Top 10
-# Esto reemplaza completamente las queries predefinidas
 queries:
   - uses: ./.github/codeql/owasp-top-10-js.qls
 

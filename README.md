@@ -71,17 +71,17 @@ Apunta a la query suite personalizada y define qué paths analizar:
 ```yaml
 name: "CodeQL - OWASP Top 10"
 
+# ⚠️ CLAVE: sin esto, las queries por defecto TAMBIÉN se ejecutan
+disable-default-queries: true
+
 queries:
   - uses: ./.github/codeql/owasp-top-10-js.qls
 
 paths:
   - src
-
-paths-ignore:
-  - node_modules
 ```
 
-> ⚠️ **Importante**: Al usar `queries:` con una suite personalizada, CodeQL **no** ejecuta las queries predefinidas (`default` ni `security-extended`). Solo ejecuta lo que definas en tu suite.
+> ⚠️ **Muy importante**: La directiva `disable-default-queries: true` es **imprescindible**. Sin ella, CodeQL ejecuta las queries por defecto (`default` suite) **además** de las personalizadas, y aparecerán alertas fuera de OWASP Top 10.
 
 ### 3. `.github/workflows/codeql.yml` — El Workflow
 
