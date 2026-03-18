@@ -1,4 +1,4 @@
-# 🛡️ GHAS + CodeQL: Configuración por Marco Normativo (OWASP Top 10)
+# 🛡️ CodeQL solo ejecuta las reglas de OWASP Top 10 🔥
 
 <div align="center">
 
