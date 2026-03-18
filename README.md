@@ -1,4 +1,4 @@
-# 🛡️ CodeQL solo ejecuta las reglas de OWASP Top 10 🔥
+# 🛡️ CodeQL: reglas OWASP Top 10 + queries personalizadas 🔥
 
 <div align="center">
 
@@ -11,7 +11,10 @@
 
 ---
 
-¡Hola developer 👋🏻! En este repo encontrarás cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para ejecutar **únicamente** las queries alineadas con un marco normativo específico — en este caso, el **[OWASP Top 10 (2025)](https://owasp.org/Top10/2025/0x00_2025-Introduction)**.
+¡Hola developer 👋🏻! En este repo encontrarás cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para:
+
+1. 🎯 Ejecutar **únicamente** las queries alineadas con un marco normativo — en este caso, el **[OWASP Top 10 (2025)](https://owasp.org/Top10/2025/0x00_2025-Introduction)**
+2. 🏦 Crear **queries personalizadas** que validen reglas de negocio propias — como verificar que en un banco siempre se valide el contexto antes de ejecutar operaciones sensibles
 
 ## 🎯 ¿Por qué filtrar queries por marco normativo?
 
@@ -27,25 +30,32 @@ Por defecto, CodeQL ejecuta cientos de queries de seguridad. Esto es útil, pero
 ```
 .github/
 ├── codeql/
-│   ├── codeql-config.yml          ← Configuración de CodeQL (apunta a la suite)
-│   └── owasp-top-10-js.qls       ← Query suite: solo queries OWASP Top 10 (2025)
+│   ├── codeql-config.yml          ← Configuración de CodeQL (OWASP + custom)
+│   ├── owasp-top-10-js.qls       ← Query suite: solo queries OWASP Top 10 (2025)
+│   └── custom-queries/            ← 🏦 Query pack personalizado
+│       ├── qlpack.yml             ← Dependencias del pack
+│       └── missing-context-validation.ql  ← Regla: validar antes de operar
 └── workflows/
     └── codeql.yml                 ← Workflow que ejecuta el análisis
 src/
 ├── index.js                       ← Entry point Express
+├── services/
+│   └── bank-service.js            ← 🏦 Servicio bancario (validación + operaciones)
+├── compliant-operation.js         ← 🏦 ✅ Operaciones CON validación (0 alertas)
+├── non-compliant-operation.js     ← 🏦 ❌ Operaciones SIN validación (5 alertas)
 ├── sql-injection.js               ← A05: Injection (SQL)
 ├── xss.js                         ← A05: Injection (XSS)
 ├── command-injection.js           ← A05: Injection (Command)
 ├── prototype-pollution.js         ← A05: Injection (Prototype Pollution)
 ├── path-traversal.js              ← A01: Broken Access Control
 ├── open-redirect.js               ← A01: Broken Access Control
-├── ssrf.js                        ← A01: Broken Access Control (SSRF, antes A10:2021)
+├── ssrf.js                        ← A01: Broken Access Control (SSRF)
 ├── security-misconfiguration.js   ← A02: Security Misconfiguration
 ├── weak-crypto.js                 ← A04: Cryptographic Failures
 ├── hardcoded-credentials.js       ← A07: Authentication Failures
 ├── insecure-deserialization.js    ← A08: Software or Data Integrity
 ├── config.json                    ← A07: Passwords en archivo de configuración
-└── non-owasp-redos.js             ← ⚠️ ReDoS (NO es OWASP Top 10 - prueba de filtro)
+└── non-owasp-redos.js             ← ⚠️ ReDoS (NO OWASP - prueba de filtro)
 ```
 
 ## 🔑 Archivos clave
@@ -106,6 +116,85 @@ Referencia la configuración personalizada:
     config-file: ./.github/codeql/codeql-config.yml
 ```
 
+## 🏦 Query Personalizada: Validación de Contexto Bancario
+
+Además de filtrar por marco normativo, este repo demuestra cómo crear **queries CodeQL propias** para verificar reglas de negocio específicas.
+
+### El problema
+
+En entornos bancarios, toda operación sensible (transacciones, pagos, créditos, retiros) **debe estar precedida** por una validación de contexto (sesión, autorización). Si un desarrollador se salta esa validación, introduce un riesgo de seguridad.
+
+### La solución: una query personalizada
+
+El archivo `.github/codeql/custom-queries/missing-context-validation.ql` implementa esta regla:
+
+```
+📦 Operaciones sensibles           🔐 Validaciones requeridas
+─────────────────────────          ─────────────────────────
+executeTransaction()          ←    validateContext()
+transferFunds()               ←    validateSession()
+processPayment()              ←    verifyAuthorization()
+approveCredit()
+withdrawFunds()
+```
+
+**Si una operación sensible se ejecuta sin que alguna función de validación la preceda en la misma función, CodeQL genera una alerta.**
+
+### Cómo funciona la query
+
+```ql
+// 1. Definir qué funciones son "sensibles"
+predicate isSensitiveOperationName(string name) {
+  name = "executeTransaction" or
+  name = "transferFunds" or ...
+}
+
+// 2. Definir qué funciones son "validaciones"
+predicate isValidationFunctionName(string name) {
+  name = "validateContext" or
+  name = "validateSession" or ...
+}
+
+// 3. Buscar llamadas sensibles SIN validación previa
+from CallExpr sensitiveCall, Function enclosingFunc
+where
+  isSensitiveOperationName(getCallName(sensitiveCall)) and
+  enclosingFunc = sensitiveCall.getEnclosingFunction() and
+  not exists(CallExpr validationCall |
+    isValidationFunctionName(getCallName(validationCall)) and
+    validationCall.getEnclosingFunction() = enclosingFunc and
+    validationCall.getLocation().getStartLine() < sensitiveCall.getLocation().getStartLine()
+  )
+select sensitiveCall, "Operación sin validación de contexto..."
+```
+
+### Resultado esperado
+
+| Archivo | ¿Alerta? | Motivo |
+|---|---|---|
+| `src/compliant-operation.js` | ✅ Sin alertas | Todas las operaciones llaman `validateContext()` o `validateSession()` antes |
+| `src/non-compliant-operation.js` | ❌ 5 alertas | Las 5 operaciones se ejecutan sin validación previa |
+
+### Cómo crear tu propio query pack
+
+```yaml
+# .github/codeql/custom-queries/qlpack.yml
+name: custom-banking-queries
+version: 0.0.1
+dependencies:
+  codeql/javascript-all: "*"  # Necesario para importar la librería de JS
+```
+
+```yaml
+# .github/codeql/codeql-config.yml
+disable-default-queries: true
+queries:
+  - uses: ./.github/codeql/owasp-top-10-js.qls      # Queries estándar filtradas
+  - uses: ./.github/codeql/custom-queries             # Queries personalizadas
+```
+
+> 💡 **Clave**: `queries` acepta múltiples entradas. Puedes combinar suites estándar filtradas con queries propias en la misma configuración.
+
 ## 📊 Mapeo OWASP Top 10 (2025) → CWE → Queries CodeQL (JS/TS)
 
 | OWASP 2025 | Categoría | CWEs Principales | Queries CodeQL (ejemplos) |
@@ -156,14 +245,21 @@ El mismo patrón aplica para cualquier framework. Solo necesitas:
 | `security-and-quality` | Todo lo anterior + calidad de código | Análisis completo |
 | **Suite personalizada (.qls)** | **Solo lo que tú definas** | **Cumplimiento normativo específico** ✅ |
 
-## 🧪 Verificación: ¿El filtro funciona?
+## 🧪 Verificación: ¿Los filtros funcionan?
+
+### Filtro OWASP
 
 El archivo `src/non-owasp-redos.js` contiene una vulnerabilidad **ReDoS** (Regular Expression Denial of Service, CWE-1333) que **no pertenece al OWASP Top 10**. 
 
 - ✅ Con la suite `security-extended` estándar, CodeQL **sí la detectaría** (`js/polynomial-redos`)
 - ❌ Con nuestra suite personalizada OWASP, **no aparece** en la pestaña Security
 
-Esto demuestra que el filtro funciona: solo se ejecutan las queries que definimos en la `.qls`.
+### Query personalizada bancaria
+
+- ✅ `src/compliant-operation.js` → **0 alertas** (valida antes de operar)
+- ❌ `src/non-compliant-operation.js` → **5 alertas** (opera sin validar)
+
+Esto demuestra que ambos filtros funcionan: las queries estándar se filtran por OWASP, y las queries personalizadas detectan patrones de negocio específicos.
 
 ## 📚 Referencias
 

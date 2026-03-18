@@ -11,9 +11,12 @@ name: "CodeQL - OWASP Top 10"
 # Sin esto, CodeQL ejecuta las queries por defecto ADEMÁS de las personalizadas
 disable-default-queries: true
 
-# Usar SOLO la query suite personalizada de OWASP Top 10
+# Queries a ejecutar:
+# 1. Suite OWASP Top 10 (2025) - queries estándar filtradas por marco normativo
+# 2. Queries personalizadas de negocio bancario (custom rules)
 queries:
   - uses: ./.github/codeql/owasp-top-10-js.qls
+  - uses: ./.github/codeql/custom-queries
 
 # Paths a analizar (solo el código fuente de la aplicación)
 paths:

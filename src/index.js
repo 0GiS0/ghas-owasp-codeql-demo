@@ -18,6 +18,10 @@ app.use('/api', require('./ssrf'));
 app.use('/api', require('./open-redirect'));
 app.use('/api', require('./prototype-pollution'));
 
+// Banking operations - custom CodeQL query demo
+app.use('/api', require('./compliant-operation'));
+app.use('/api', require('./non-compliant-operation'));
+
 app.get('/', (req, res) => {
   res.json({
     name: 'ghas-owasp-codeql-demo',
@@ -33,7 +37,19 @@ app.get('/', (req, res) => {
       'GET  /api/validate-email?email= → ReDoS (NO OWASP - no debería detectarse)',
       'GET  /api/fetch?url=            → SSRF',
       'GET  /api/login?returnUrl=      → Open Redirect',
-      'POST /api/settings              → Prototype Pollution'
+      'POST /api/settings              → Prototype Pollution',
+      '',
+      '--- Custom Banking Rules (query personalizada) ---',
+      'POST /api/bank/transfer          → ✅ Con validación de contexto',
+      'POST /api/bank/payment           → ✅ Con validación de contexto',
+      'POST /api/bank/international-transfer → ✅ Con validación',
+      'POST /api/bank/credit            → ✅ Con validación de contexto',
+      'POST /api/bank/withdrawal        → ✅ Con validación de contexto',
+      'POST /api/bank/quick-transfer    → ❌ SIN validación (alerta custom)',
+      'POST /api/bank/quick-payment     → ❌ SIN validación (alerta custom)',
+      'POST /api/bank/batch-transfer    → ❌ SIN validación (alerta custom)',
+      'POST /api/bank/auto-credit       → ❌ SIN validación (alerta custom)',
+      'POST /api/bank/quick-withdrawal  → ❌ SIN validación (alerta custom)'
     ]
   });
 });

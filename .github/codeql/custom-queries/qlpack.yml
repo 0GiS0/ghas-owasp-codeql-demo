@@ -1,0 +1,6 @@
+# CodeQL Query Pack personalizado para reglas de negocio bancarias
+# Este pack contiene queries custom que no están en las suites estándar de CodeQL
+name: custom-banking-queries
+version: 0.0.1
+dependencies:
+  codeql/javascript-all: "*"
