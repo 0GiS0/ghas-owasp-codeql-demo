@@ -1,6 +1,17 @@
 # 🛡️ GHAS + CodeQL: Configuración por Marco Normativo (OWASP Top 10)
 
-Este repositorio demuestra cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para ejecutar **únicamente** las queries alineadas con un marco normativo específico — en este caso, el **OWASP Top 10 (2021)**.
+<div align="center">
+
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC140iBrEZbOtvxWsJ-Tb0lQ?style=for-the-badge&logo=youtube&logoColor=white&color=red)](https://www.youtube.com/c/GiselaTorres?sub_confirmation=1)
+[![GitHub followers](https://img.shields.io/github/followers/0GiS0?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0GiS0)
+[![LinkedIn Follow](https://img.shields.io/badge/LinkedIn-Sígueme-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/giselatorresbuitrago/)
+[![X Follow](https://img.shields.io/badge/X-Sígueme-black?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/0GiS0)
+
+</div>
+
+---
+
+¡Hola developer 👋🏻! En este repo encontrarás cómo configurar **GitHub Advanced Security (GHAS)** con **CodeQL** para ejecutar **únicamente** las queries alineadas con un marco normativo específico — en este caso, el **OWASP Top 10 (2021)**.
 
 ## 🎯 ¿Por qué filtrar queries por marco normativo?
 
@@ -157,3 +168,16 @@ Esto demuestra que el filtro funciona: solo se ejecutan las queries que definimo
 ## 📄 Licencia
 
 MIT
+
+## 🌐 Sígueme en Mis Redes Sociales
+
+Si te ha gustado este proyecto y quieres ver más contenido como este, no olvides suscribirte a mi canal de YouTube y seguirme en mis redes sociales:
+
+<div align="center">
+
+[![YouTube Channel Subscribers](https://img.shields.io/youtube/channel/subscribers/UC140iBrEZbOtvxWsJ-Tb0lQ?style=for-the-badge&logo=youtube&logoColor=white&color=red)](https://www.youtube.com/c/GiselaTorres?sub_confirmation=1)
+[![GitHub followers](https://img.shields.io/github/followers/0GiS0?style=for-the-badge&logo=github&logoColor=white)](https://github.com/0GiS0)
+[![LinkedIn Follow](https://img.shields.io/badge/LinkedIn-Sígueme-blue?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/giselatorresbuitrago/)
+[![X Follow](https://img.shields.io/badge/X-Sígueme-black?style=for-the-badge&logo=x&logoColor=white)](https://twitter.com/0GiS0)
+
+</div>
